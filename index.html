@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Radar · Hiper-personalización en e-commerce PyME</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#f5f3ec; --paper-2:#e9e6da; --ink:#1b1f1c; --ink-2:#5d6259; --rule:#cbc8bb;
+  --spot:#0f7a6a;
+  --s-VTEX:#0e7c86; --s-McKinsey:#3551a8; --s-Adobe:#c8502f; --s-accessiBe:#7a4fb0; --s-Voyado:#a8772a;
+  --h-Corto:#2f8a5b; --h-Mediano:#c0792a; --h-Largo:#6b4fb8;
+  --g-Alta:#c8502f; --g-Media:#c0912a; --g-NoEsp:#8a8d86;
+  --f-mast:"Bricolage Grotesque","Arial Black",Arial,sans-serif;
+  --f-head:"Fraunces",Georgia,"Times New Roman",serif;
+  --f-ui:"Inter",Arial,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0e1412; --paper-2:#17201d; --ink:#e6ece8; --ink-2:#9fada5; --rule:#2f3b36;
+  --spot:#5fd3b8; --s-VTEX:#5fc6cf; --s-McKinsey:#8fa6ea; --s-Adobe:#f08a68; --s-accessiBe:#b79be6; --s-Voyado:#e0b36a;
+  --h-Corto:#6fd09b; --h-Mediano:#e7a863; --h-Largo:#b9a2f0;
+  --g-Alta:#f08a68; --g-Media:#e7b963; --g-NoEsp:#9aa39e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0e1412; --paper-2:#17201d; --ink:#e6ece8; --ink-2:#9fada5; --rule:#2f3b36;
+  --spot:#5fd3b8; --s-VTEX:#5fc6cf; --s-McKinsey:#8fa6ea; --s-Adobe:#f08a68; --s-accessiBe:#b79be6; --s-Voyado:#e0b36a;
+  --h-Corto:#6fd09b; --h-Mediano:#e7a863; --h-Largo:#b9a2f0;
+  --g-Alta:#f08a68; --g-Media:#e7b963; --g-NoEsp:#9aa39e; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-head);font-size:17px;line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto;padding:18px 16px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.kicker{font-family:var(--f-mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-2)}
+h1,h2,h3{margin:0;text-wrap:balance}
+select{font:inherit;background:var(--paper);color:var(--ink);border:1px solid var(--rule);padding:6px 8px;max-width:100%}
+select:focus-visible{outline:2px solid var(--spot);outline-offset:2px}
+
+/* Cabecera */
+.mast{display:flex;align-items:center;justify-content:center;gap:clamp(12px,2.4vw,26px);padding:18px 0 10px;flex-wrap:wrap}
+.mast h1{font-family:var(--f-mast);font-weight:800;font-size:clamp(26px,5.4vw,64px);line-height:.95;letter-spacing:-.025em;text-transform:uppercase;text-align:center}
+.mast h1 small{display:block;font-family:var(--f-mono);font-weight:500;font-size:clamp(11px,1.2vw,14px);letter-spacing:.32em;color:var(--spot);margin-bottom:6px}
+.scope{flex:none;width:clamp(54px,8vw,92px);aspect-ratio:1;border-radius:50%;position:relative;border:1.5px solid var(--ink);overflow:hidden;
+  background:radial-gradient(circle,transparent 31%,var(--rule) 32%,transparent 33.5%,transparent 64%,var(--rule) 65%,transparent 66.5%),linear-gradient(var(--rule),var(--rule)) center/1px 100% no-repeat,linear-gradient(90deg,var(--rule),var(--rule)) center/100% 1px no-repeat}
+.scope::before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,color-mix(in srgb,var(--spot) 55%,transparent),transparent 70deg);animation:sweep 6s linear infinite}
+@keyframes sweep{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.scope::before{animation:none;transform:rotate(40deg)}}
+.deck{text-align:center;font-style:italic;color:var(--ink-2);font-size:16px;margin:4px auto 0;max-width:720px}
+.dateline{display:flex;justify-content:space-between;align-items:center;gap:10px 16px;flex-wrap:wrap;border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);padding:8px 0;margin-top:14px;font-family:var(--f-mono);font-size:12.5px;text-transform:uppercase;letter-spacing:.06em}
+
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;padding:22px 0;border-bottom:1px solid var(--ink)}
+.kpi{background:var(--paper-2);border-top:3px solid var(--spot);padding:14px 16px}
+.kpi .n{font-family:var(--f-mast);font-weight:700;font-size:clamp(26px,3.6vw,40px);line-height:1;margin-top:8px}
+.kpi .l{font-family:var(--f-ui);font-size:14px;color:var(--ink-2);margin-top:6px}
+@media (max-width:760px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Secciones */
+.band{padding:26px 0;border-bottom:1px solid var(--rule)}
+.band h2{font-family:var(--f-head);font-size:clamp(22px,3vw,30px);font-weight:700;margin-top:6px}
+.band .sub{font-family:var(--f-ui);color:var(--ink-2);font-size:15px;margin:6px 0 16px}
+
+/* Barras horizontales apiladas por fuente */
+.row{display:grid;grid-template-columns:110px minmax(0,1fr);gap:10px;align-items:center;margin:10px 0;font-family:var(--f-ui);font-size:15px}
+.bar{display:flex;height:30px;background:var(--paper-2);border-radius:2px;overflow:hidden}
+.seg{display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--f-mono);font-size:12px;font-weight:500;min-width:0;white-space:nowrap;overflow:hidden}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--f-ui);font-size:14px;color:var(--ink-2);margin-top:10px}
+.legend i{display:inline-block;width:11px;height:11px;margin-right:6px;vertical-align:-1px}
+.sw-Corto{background:var(--h-Corto)} .sw-Mediano{background:var(--h-Mediano)} .sw-Largo{background:var(--h-Largo)}
+.sw-Alta{background:var(--g-Alta)} .sw-Media{background:var(--g-Media)} .sw-NoEsp{background:var(--g-NoEsp)}
+.seg.Corto{background:var(--h-Corto)} .seg.Mediano{background:var(--h-Mediano)}
+
+/* Mapa horizonte x brecha */
+.heat{display:grid;grid-template-columns:150px repeat(3,minmax(0,1fr));gap:6px;font-family:var(--f-ui);font-size:14px}
+.heat .hd{font-family:var(--f-mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-2);padding:6px 4px}
+.heat .rl{display:flex;align-items:center;font-weight:600;padding:6px 4px}
+.tag{display:inline-block;font-family:var(--f-mono);font-size:11.5px;padding:2px 8px;color:#fff;white-space:nowrap}
+.cell{background:var(--paper-2);padding:10px;min-height:86px;border-left:4px solid var(--c,var(--rule))}
+.cell .big{font-family:var(--f-mast);font-size:26px;font-weight:700;line-height:1}
+.cell ul{margin:8px 0 0;padding-left:16px;color:var(--ink-2);font-size:13.5px;line-height:1.35}
+.cell.empty{opacity:.45}
+@media (max-width:640px){.heat{grid-template-columns:1fr}.heat .hd{display:none}.heat .rl{padding-top:12px}}
+
+.note{font-family:var(--f-ui);font-size:14.5px;color:var(--ink-2);background:var(--paper-2);padding:12px 14px;border-left:3px solid var(--spot);margin-top:14px}
+
+/* Filtros y tabla */
+.filters{display:flex;gap:14px;flex-wrap:wrap;align-items:center;font-family:var(--f-ui);font-size:15px;margin:6px 0 14px}
+.filters label{display:flex;gap:8px;align-items:center}
+.tbl-wrap{overflow-x:auto;border-top:1px solid var(--ink)}
+table{width:100%;border-collapse:collapse;font-family:var(--f-ui);font-size:15px;min-width:760px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--f-mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-2);font-weight:500}
+td.desc{font-family:var(--f-head);font-size:16px;line-height:1.4;max-width:380px}
+.src{font-weight:600}
+.src-VTEX{color:var(--s-VTEX)} .src-McKinsey{color:var(--s-McKinsey)} .src-Adobe{color:var(--s-Adobe)} .src-accessiBe{color:var(--s-accessiBe)} .src-Voyado{color:var(--s-Voyado)}
+.empty-msg{padding:16px 0;color:var(--ink-2);font-family:var(--f-ui)}
+
+/* Referencias de mercado */
+.stat{display:grid;grid-template-columns:minmax(0,1fr) 150px 70px;gap:12px;align-items:center;margin:12px 0}
+.stat .t{font-family:var(--f-ui);font-size:15px}
+.stat .t small{display:block;color:var(--ink-2);font-size:13px}
+.stat .track{height:14px;background:var(--paper-2);position:relative}
+.stat .fill{height:100%;background:var(--spot)}
+.stat.warn .fill{background:var(--g-Alta)}
+.stat.neutral .fill{background:var(--g-NoEsp)}
+.stat .v{font-family:var(--f-mast);font-size:18px;font-weight:700;text-align:right}
+@media (max-width:620px){.stat{grid-template-columns:1fr}.stat .v{text-align:left}}
+
+.foot{padding-top:22px;font-family:var(--f-ui);font-size:14px;color:var(--ink-2)}
+.foot ul{padding-left:18px;margin:8px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="mast">
+      <div class="scope" aria-hidden="true"></div>
+      <h1><small>Radar · E-commerce PyME</small>Hiper-personalización</h1>
+    </div>
+    <p class="deck">Qué tendencias de personalización llegan, en qué plazo y cuánto se separan de lo que hoy hacen las PyMEs.</p>
+    <div class="dateline">
+      <span>Actualizado: jueves 12 de noviembre de 2026</span>
+      <span>5 fuentes de tendencias · 14 tendencias · 8 referencias de mercado</span>
+    </div>
+  </header>
+
+  <section class="kpis" aria-label="Indicadores clave">
+    <div class="kpi"><div class="kicker">Tendencias analizadas</div><div class="n">14</div><div class="l">De 5 fuentes</div></div>
+    <div class="kpi"><div class="kicker">Horizonte corto</div><div class="n">9</div><div class="l">0 a 1 año · 64% del total</div></div>
+    <div class="kpi"><div class="kicker">Brecha alta</div><div class="n">7</div><div class="l">Respecto a la PyME promedio</div></div>
+    <div class="kpi"><div class="kicker">Horizonte largo</div><div class="n">0</div><div class="l">Ninguna tendencia a 3+ años</div></div>
+  </section>
+
+  <section class="band">
+    <div class="kicker">¿Qué puede venir?</div>
+    <h2>Dónde se concentran las tendencias</h2>
+    <p class="sub">Cantidad de tendencias por fuente y horizonte. Los horizontes inferidos son estimación propia, no dato de la fuente.</p>
+
+    <div class="row"><span>VTEX</span><div class="bar">
+      <div class="seg Corto" style="flex:2">Corto · 2</div>
+      <div class="seg Mediano" style="flex:1">Mediano · 1</div>
+    </div></div>
+    <div class="row"><span>McKinsey</span><div class="bar">
+      <div class="seg Corto" style="flex:3">Corto · 3</div>
+      <div class="seg Mediano" style="flex:1">Mediano · 1</div>
+    </div></div>
+    <div class="row"><span>Adobe</span><div class="bar">
+      <div class="seg Corto" style="flex:3">Corto · 3</div>
+      <div class="seg Mediano" style="flex:1">Mediano · 1</div>
+    </div></div>
+    <div class="row"><span>accessiBe</span><div class="bar">
+      <div class="seg Corto" style="flex:1">Corto · 1</div>
+      <div class="seg Mediano" style="flex:1">Mediano · 1</div>
+    </div></div>
+    <div class="row"><span>Voyado</span><div class="bar">
+      <div class="seg Mediano" style="flex:1">Mediano · 1</div>
+    </div></div>
+
+    <div class="legend">
+      <span><i class="sw-Corto"></i>Corto (0-1 año)</span>
+      <span><i class="sw-Mediano"></i>Mediano (1-3 años)</span>
+      <span><i class="sw-Largo"></i>Largo (3+ años): sin casos</span>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="kicker">¿Dónde están las brechas?</div>
+    <h2>Horizonte × brecha frente a la PyME promedio</h2>
+    <p class="sub">Cada tendencia cae en una celda. Las de brecha alta son las que más distancia tienen con lo que hoy hace una PyME.</p>
+
+    <div class="heat" role="table" aria-label="Matriz horizonte por brecha">
+      <div></div>
+      <div class="hd" role="columnheader">Corto (0-1 año)</div>
+      <div class="hd" role="columnheader">Mediano (1-3 años)</div>
+      <div class="hd" role="columnheader">Largo (3+ años)</div>
+
+      <div class="rl" role="rowheader"><span class="tag" style="background:var(--g-Alta)">Brecha alta</span></div>
+      <div class="cell" style="--c:var(--g-Alta)" role="cell">
+        <div class="big">4</div>
+        <ul><li>IA como motor de personalización</li><li>Clienteling con IA</li><li>Búsqueda semántica</li><li>Hiper-personalización como expectativa base</li></ul>
+      </div>
+      <div class="cell" style="--c:var(--g-Alta)" role="cell">
+        <div class="big">3</div>
+        <ul><li>Calidad de datos de clientes</li><li>Agentes de IA para el carrito</li><li>Herramientas que se adaptan rápido</li></ul>
+      </div>
+      <div class="cell empty" style="--c:var(--g-Alta)" role="cell"><div class="big">0</div></div>
+
+      <div class="rl" role="rowheader"><span class="tag" style="background:var(--g-Media)">Brecha media</span></div>
+      <div class="cell" style="--c:var(--g-Media)" role="cell">
+        <div class="big">5</div>
+        <ul><li>Personalización por comprador</li><li>Recomendaciones y promociones</li><li>Datos de catálogo y precios en vivo</li><li>Priorización de coincidencias exactas</li><li>Control de ranking</li></ul>
+      </div>
+      <div class="cell empty" style="--c:var(--g-Media)" role="cell"><div class="big">0</div></div>
+      <div class="cell empty" style="--c:var(--g-Media)" role="cell"><div class="big">0</div></div>
+
+      <div class="rl" role="rowheader"><span class="tag" style="background:var(--g-NoEsp)">Sin especificar</span></div>
+      <div class="cell empty" style="--c:var(--g-NoEsp)" role="cell"><div class="big">0</div></div>
+      <div class="cell" style="--c:var(--g-NoEsp)" role="cell">
+        <div class="big">2</div>
+        <ul><li>Hoja de ruta de descubrimiento con IA (Adobe)</li><li>Accesibilidad como parte de la personalización</li></ul>
+      </div>
+      <div class="cell empty" style="--c:var(--g-NoEsp)" role="cell"><div class="big">0</div></div>
+    </div>
+    <div class="note">La brecha es una clasificación cualitativa propia, derivada del análisis de cada fuente. No existe un benchmark directo que compare PyMEs con el promedio de e-commerce.</div>
+  </section>
+
+  <section class="band">
+    <div class="kicker">Detalle</div>
+    <h2>Matriz de tendencias</h2>
+    <p class="sub">Filtrá por fuente, horizonte o brecha para ver solo lo que te interesa.</p>
+
+    <div class="filters">
+      <label>Fuente
+        <select id="f-src">
+          <option value="">Todas</option>
+          <option value="VTEX">VTEX</option>
+          <option value="McKinsey">McKinsey</option>
+          <option value="Adobe">Adobe</option>
+          <option value="accessiBe">accessiBe</option>
+          <option value="Voyado">Voyado</option>
+        </select>
+      </label>
+      <label>Horizonte
+        <select id="f-hor">
+          <option value="">Todos</option>
+          <option value="Corto">Corto (0-1 año)</option>
+          <option value="Mediano">Mediano (1-3 años)</option>
+          <option value="Largo">Largo (3+ años)</option>
+        </select>
+      </label>
+      <label>Brecha
+        <select id="f-gap">
+          <option value="">Todas</option>
+          <option value="Alta">Alta</option>
+          <option value="Media">Media</option>
+          <option value="NoEsp">Sin especificar</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>Tendencia</th><th>Fuente</th><th>Horizonte</th><th>Brecha</th><th>Lectura</th></tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="empty-msg" id="empty" hidden>No hay tendencias con esos filtros.</div>
+  </section>
+
+  <section class="band">
+    <div class="kicker">¿Qué está pasando hoy?</div>
+    <h2>Números de referencia</h2>
+    <p class="sub">Cada cifra dice quién la mide. Ninguna compara directamente PyMEs con el promedio: se usan como señal, no como promedio.</p>
+
+    <div class="stat warn">
+      <div class="t">PyMEs argentinas que usan al menos una herramienta de IA<small>nadIA / UTDT, encuesta a 402 empresas</small></div>
+      <div><div class="track"><div class="fill" style="width:41.6%"></div></div></div>
+      <div class="v">41,6%</div>
+    </div>
+    <div class="stat warn">
+      <div class="t">PyMEs argentinas sin evaluación sistemática de resultados<small>nadIA / UTDT</small></div>
+      <div><div class="track"><div class="fill" style="width:57%"></div></div></div>
+      <div class="v">57%</div>
+    </div>
+    <div class="stat neutral">
+      <div class="t">PyMEs argentinas con IA autónoma (agentes)<small>nadIA / UTDT</small></div>
+      <div><div class="track"><div class="fill" style="width:4.1%"></div></div></div>
+      <div class="v">4,1%</div>
+    </div>
+    <div class="stat warn">
+      <div class="t">Líderes de e-commerce que dicen que sus herramientas no alcanzan para personalizar<small>Voyado, Inside e-commerce 2026 (muestra no informada)</small></div>
+      <div><div class="track"><div class="fill" style="width:48%"></div></div></div>
+      <div class="v">48%</div>
+    </div>
+    <div class="stat neutral">
+      <div class="t">E-commerce LATAM que recomiendan productos según el historial de navegación<small>Google Cloud, Retail Garage 2026: 30 e-commerce principales</small></div>
+      <div><div class="track"><div class="fill" style="width:33%"></div></div></div>
+      <div class="v">1 de 3</div>
+    </div>
+    <div class="stat neutral">
+      <div class="t">Empresas enterprise con IA generativa activa en su plataforma<small>G2, preparado para Adobe (15 jun. 2026)</small></div>
+      <div><div class="track"><div class="fill" style="width:24.7%"></div></div></div>
+      <div class="v">24,7%</div>
+    </div>
+    <div class="stat neutral">
+      <div class="t">Consumidores EE. UU. que priorizan la fiabilidad del stock<small>McKinsey, encuesta ICSC a 3.004 consumidores (ene. 2026)</small></div>
+      <div><div class="track"><div class="fill" style="width:37%"></div></div></div>
+      <div class="v">37%</div>
+    </div>
+    <div class="stat neutral">
+      <div class="t">Empresas con estrategia de personalización que usan personalización con IA<small>Ringly, 2026. No es el promedio del mercado: excluye a quienes no tienen estrategia.</small></div>
+      <div><div class="track"><div class="fill" style="width:92%"></div></div></div>
+      <div class="v">92%</div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="kicker">Fuentes y notas</div>
+    <ul>
+      <li>VTEX, "El futuro del comercio B2B: tendencias, retos y cómo escalar en 2026", blog de VTEX, 6 de julio de 2026.</li>
+      <li>Colleen Baum, Molly Squire, Tyler Rose y Joshua Reuben (McKinsey & Company), "Shopping in the age of AI", 27 de abril de 2026.</li>
+      <li>Sandra Gonzalez Mangana (Adobe Commerce), "Transforming product discovery with AI in Adobe Commerce", 12 de junio de 2026.</li>
+      <li>accessiBe, "Hyper-personalization: From customer preference to inclusive expectation" (actualizado el 4 de agosto de 2026). Es un proveedor de accesibilidad: su mirada es parcial.</li>
+      <li>Voyado, "Inside e-commerce 2026" (encuesta a pares, sin tamaño de muestra informado). Es un proveedor de personalización y CRM: su mirada es parcial.</li>
+      <li>nadIA / UTDT / Fundar, encuesta sobre adopción de IA en PyMEs (Argentina); Google Cloud, Retail Garage 2026; G2, reporte preparado para Adobe (2026); Ringly, "45 Ecommerce personalization statistics" (2026).</li>
+      <li>Los horizontes inferidos y las brechas son clasificación propia. Las cifras de Adobe provienen de clientes beta y no son representativas.</li>
+    </ul>
+  </footer>
+</div>
+
+<script>
+const data = [
+  {n:"IA como motor de personalización (búsqueda, contenido, demanda)", s:"VTEX", h:"Corto", g:"Alta", l:"Ya es operativa en 2026; la brecha está en la sofisticación de uso."},
+  {n:"Personalización a nivel de comprador (catálogos, precios, pagos)", s:"VTEX", h:"Corto", g:"Media", l:"Capacidad disponible; la brecha está en la implementación."},
+  {n:"Calidad de datos de clientes como requisito", s:"VTEX", h:"Mediano", g:"Alta", l:"Sin datos de calidad no hay recomendaciones ni precios dinámicos precisos."},
+  {n:"Agentes de IA para armar carrito y reponer", s:"McKinsey", h:"Mediano", g:"Alta", l:"Una PyME sin integración difícilmente será elegida por un agente comparador."},
+  {n:"Recomendaciones y promociones personalizadas", s:"McKinsey", h:"Corto", g:"Media", l:"Demanda expresada por consumidores en compras de descubrimiento."},
+  {n:"Clienteling con IA para el personal de venta", s:"McKinsey", h:"Corto", g:"Alta", l:"Antes reservada para lujo; hoy se escala, pero con costo."},
+  {n:"Datos de catálogo, stock y precios en vivo", s:"McKinsey", h:"Corto", g:"Media", l:"Base de credibilidad frente a comparadores y agentes."},
+  {n:"Búsqueda semántica con IA", s:"Adobe", h:"Corto", g:"Alta", l:"Disponible desde el 8 de junio de 2026; reduce búsquedas sin resultado."},
+  {n:"Priorización de coincidencias exactas", s:"Adobe", h:"Corto", g:"Media", l:"Beta privada con elegibilidad; brecha de acceso."},
+  {n:"Configuración inteligente del ranking", s:"Adobe", h:"Corto", g:"Media", l:"Beta pública; requiere análisis para aprovecharla."},
+  {n:"Hoja de ruta de descubrimiento con IA", s:"Adobe", h:"Mediano", g:"NoEsp", l:"Sin fechas ni beneficios concretos publicados."},
+  {n:"Hiper-personalización como expectativa base del mercado", s:"accessiBe", h:"Corto", g:"Alta", l:"El 87% de los líderes de mid-market ya la usa; la PyME tiene que ponerse al día."},
+  {n:"Accesibilidad como parte de la personalización", s:"accessiBe", h:"Mediano", g:"NoEsp", l:"La fuente la considera parte de la personalización; no evalúa la brecha de PyMEs."},
+  {n:"Herramientas de personalización que se adaptan rápido", s:"Voyado", h:"Mediano", g:"Alta", l:"48% dice que sus herramientas no alcanzan; solo 2% confía en adaptarlas rápido."}
+];
+
+const gapLabel = {Alta:"Alta", Media:"Media", NoEsp:"Sin especificar"};
+const gapColor = {Alta:"var(--g-Alta)", Media:"var(--g-Media)", NoEsp:"var(--g-NoEsp)"};
+const horColor = {Corto:"var(--h-Corto)", Mediano:"var(--h-Mediano)", Largo:"var(--h-Largo)"};
+const horLabel = {Corto:"Corto · 0-1 año", Mediano:"Mediano · 1-3 años", Largo:"Largo · 3+ años"};
+
+function esc(t){return String(t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+
+function render(){
+  const s = document.getElementById("f-src").value;
+  const h = document.getElementById("f-hor").value;
+  const g = document.getElementById("f-gap").value;
+  const rows = data.filter(d => (!s || d.s===s) && (!h || d.h===h) && (!g || d.g===g));
+  document.getElementById("tbody").innerHTML = rows.map(d =>
+    `<tr>
+      <td class="desc">${esc(d.n)}</td>
+      <td><span class="src src-${d.s}">${esc(d.s)}</span></td>
+      <td><span class="tag" style="background:${horColor[d.h]}">${esc(horLabel[d.h])}</span></td>
+      <td><span class="tag" style="background:${gapColor[d.g]}">${esc(gapLabel[d.g])}</span></td>
+      <td>${esc(d.l)}</td>
+    </tr>`).join("");
+  document.getElementById("empty").hidden = rows.length > 0;
+}
+["f-src","f-hor","f-gap"].forEach(id => document.getElementById(id).addEventListener("change", render));
+render();
+</script>
+</body>
+</html>

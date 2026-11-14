@@ -1,0 +1,8 @@
+[
+  {"nombre": "Google News - personalización pymes", "tipo": "busqueda", "consulta": "personalización ecommerce pymes inteligencia artificial", "idioma": "es-419", "pais": "AR", "ceid": "AR:es-419", "tipo_fuente": "Especializada"},
+  {"nombre": "Google News - hyper-personalization", "tipo": "busqueda", "consulta": "hyper-personalization ecommerce AI", "idioma": "en-US", "pais": "US", "ceid": "US:en", "tipo_fuente": "Especializada"},
+  {"nombre": "Google News - Adobe Commerce search", "tipo": "busqueda", "consulta": "Adobe Commerce semantic search", "idioma": "en-US", "pais": "US", "ceid": "US:en", "tipo_fuente": "Especializada"},
+  {"nombre": "VTEX Blog", "tipo": "pagina", "url": "https://www.vtex.com/es-mx/blog/", "patron": ["/blog/"], "max": 8, "tipo_fuente": "Especializada"},
+  {"nombre": "McKinsey Retail Insights", "tipo": "pagina", "url": "https://www.mckinsey.com/industries/retail/our-insights", "patron": ["/our-insights/"], "max": 8, "tipo_fuente": "Primaria"},
+  {"nombre": "Adobe Commerce Blog", "tipo": "pagina", "url": "https://business.adobe.com/blog", "patron": ["/blog/"], "max": 8, "tipo_fuente": "Especializada"}
+]
