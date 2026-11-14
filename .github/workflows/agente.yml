@@ -1,0 +1,39 @@
+name: Actualizar tendencias
+
+on:
+  schedule:
+    # Cada lunes a las 12:00 UTC, que son las 09:00 en Argentina
+    - cron: "0 12 * * 1"
+  workflow_dispatch:   # permite ejecutarlo a mano desde la pestaña Actions
+
+permissions:
+  contents: write      # necesario para guardar los datos en el repositorio
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Ejecutar el agente
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python agente_tendencias.py
+
+      - name: Guardar los datos en el repositorio
+        run: |
+          git config user.name "agente-tendencias"
+          git config user.email "agente-tendencias@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "No hubo cambios en los datos."
+          else
+            git commit -m "Actualiza datos del agente $(date -u +%F)"
+            git push
+          fi
