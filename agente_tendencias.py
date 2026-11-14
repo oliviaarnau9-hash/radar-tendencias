@@ -189,7 +189,8 @@ def clasificar(item, conocidas, reintentos=3):
             if e.code in (429, 500, 502, 503, 529) and intento < reintentos - 1:
                 time.sleep(2 ** intento * 5)
                 continue
-            print(f"[aviso] error {e.code} en '{item['titulo'][:60]}'", file=sys.stderr)
+            detalle = e.read().decode("utf-8", errors="replace")[:300]
+            print(f"[aviso] error {e.code} en '{item['titulo'][:60]}': {detalle}", file=sys.stderr)
             return None
         except Exception as e:
             print(f"[aviso] clasificación fallida en '{item['titulo'][:60]}': {e}", file=sys.stderr)
@@ -237,12 +238,19 @@ def main():
     print(f"Notas nuevas a clasificar: {len(nuevos)}")
 
     nuevas = 0
+    fallos = 0
+    en_esta_corrida = set()
     for item in nuevos:
-        if item["url"] in vistas:  # la misma nota puede venir de dos fuentes en una ejecución
-            continue
-        vistas.add(item["url"])  # se marca aunque falle, para no reintentar sin fin
+        if item["url"] in vistas or item["url"] in en_esta_corrida:
+            continue  # la misma nota puede venir de dos fuentes en una ejecución
+        en_esta_corrida.add(item["url"])
         c = clasificar(item, conocidas)
-        if not c or not c.get("es_tendencia") or not c.get("tendencia"):
+        if c is None:
+            # Falló la API: la nota NO se marca como vista, así se reintenta en la próxima ejecución
+            fallos += 1
+            continue
+        vistas.add(item["url"])
+        if not c.get("es_tendencia") or not c.get("tendencia"):
             continue
         filas.append({
             "fecha_busqueda": hoy_txt, "titulo": item["titulo"], "fuente": item["fuente"],
@@ -287,6 +295,8 @@ def main():
     conf = sum(1 for t in resumen if t["estado"] == "Confirmada")
     print(f"Notas nuevas como tendencia: {nuevas} · Tendencias: {len(resumen)} · "
           f"Confirmadas: {conf} · Vencidas: {sum(1 for t in resumen if t['estado'] == 'Vencida')}")
+    if nuevos and fallos == len(nuevos):
+        sys.exit("ERROR: ninguna nota pudo clasificarse. Revisar los avisos de la API arriba.")
 
 
 if __name__ == "__main__":
