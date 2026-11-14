@@ -23,8 +23,8 @@ jobs:
 
       - name: Ejecutar el agente
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: python agente_tendencias.py
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          OPENROUTER_MODEL: nvidia/nemotron-3-ultra-550b-a55b:free
 
       - name: Guardar los datos en el repositorio
         run: |
